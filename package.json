@@ -5,6 +5,7 @@
   "main": "gtest.js",
   "lint": "eslint --ignore-path .gitignore .",
   "scripts": {
+    "start": "node gtest.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
