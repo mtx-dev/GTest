@@ -1,24 +1,35 @@
 'use srict';
 
-const interfaceConsole = require('./iconsole');
+const sourceConsole = require('./sconsole');
+const questioner = require('./questioner');
+// const utils = require('./utils');
 
 async function main() {
-  const userInterface = interfaceConsole.create();
-  /*
-const inData = interfaceDatafile();
-const outData = interfaceConsole();
-const service = serviceBank();
+  // Defaults
+  const dataSource = {
+    name: 'file',
+  };
+  const outDataSource = {
+    name: 'console',
+  };
+  const userSource = sourceConsole.create();
 
-initSettings(inData.settings, userInterface);
-const data = inData.readData();
-const command = inputCommand(userInterface, service.commands);
-const result = service(data, command);
-printResult(result, outData); */
+  // Set sorce of data
+  dataSource.name = questioner.source(userSource);
+
+  // Set source settings
+  dataSource.settings = questioner(dataSource.name, userSource);
+
+  /* To do
+  const inData = dataReader(dataSource);
+  const command = inputCommand(userSource, utils.commands);
+  const result = service(inData, command);
+  printResult(result, outDataSource); */
 
   // tests
-  userInterface.init();
-  const listen = await userInterface.inputAnswer('what?');
-  userInterface.print(`answer is - ${listen}`);
-  userInterface.close();
+  userSource.init();
+  const listen = await userSource.inputAnswer('what?');
+  userSource.print(`answer is - ${listen}`);
+  userSource.close();
 }
 main();
