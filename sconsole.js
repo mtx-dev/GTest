@@ -1,5 +1,5 @@
 /**
- Coonsole Interface
+ Console source
  */
 const colors = {
   reset: '\x1b[0m',
@@ -18,8 +18,8 @@ const levels = {
 const readline = require('readline');
 
 let rl;
-function log(...args) {
-  console.log(args);
+function log(text) {
+  console.log(text);
 }
 
 function cnslPrint(text = '') {
@@ -43,15 +43,13 @@ function cnslPrintOrderedList(arr, color = 'cyan') {
 
 function cnslPrintOrderedListColumn(arr, color = 'cyan') {
   const COLUMNS = 3;
-  let arrStr = '\n';
+  const arrStr = [''];
+  let counter = 0;
   arr.forEach((value, index) => {
-    arrStr += `${colors[color]} [${index}] ${colors.reset} ${value} \t\t `;
-    if (((index + 1) % COLUMNS) === 0) {
-      console.log(`${arrStr}`);
-      arrStr = '';
-    }
+    arrStr[counter] += `${colors[color]} [${index}] ${colors.reset} ${value} \t\t `;
+    if (((index + 1) % COLUMNS) === 0) arrStr[++counter] = '';
   });
-  console.log();
+  log(arrStr.join('\n'));
 }
 
 function cnslPrintWaring(text, level = 'waring') {
@@ -62,6 +60,22 @@ async function cnslInputAnswer(question) {
   const promise = new Promise((resolve) => {
     rl.question(question, (answer) => {
       resolve(answer.trim());
+    });
+  });
+  const result = await promise;
+  return result;
+}
+
+async function cnsInterrogator(question, callDo, callCheck) {
+  log(question);
+  rl.prompt();
+  const promise = new Promise((resolve) => {
+    rl.on('line', (line) => {
+      if (callCheck(line.trim())) resolve(callCheck(line.trim()));
+      else {
+        callDo(line);
+        rl.prompt();
+      }
     });
   });
   const result = await promise;
@@ -93,6 +107,7 @@ const sourceConsole = () => ({
   printOrderedListColumn: (arr, col) => cnslPrintOrderedListColumn(arr, col),
   printWaring: (text, level) => cnslPrintWaring(text, level),
   inputAnswer: (question) => cnslInputAnswer(question),
+  interrogator: (question, callDo, callWhile) => cnsInterrogator(question, callDo, callWhile),
   clearScreen: () => cnslClear(),
 });
 
