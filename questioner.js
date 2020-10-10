@@ -12,7 +12,8 @@ const CURRENT_FILE = 'Current file - ';
 const CHANGE_DIR = 'Change dir? [Y/N] ';
 const CHANGE_FILE = 'Change file? [Y/N] ';
 const CHOOSE_FILE = 'Choose file: ';
-
+const CHOOSE_SOURCE = 'Choose the source [N]: ';
+const CHOOSE_COMMAND = 'Choose the command [N]: ';
 // changeDirectory const
 const HELP_DIR = '\nFolder number to enter it    or   y - to choose current folder';
 const ENTER = 'Answer: ';
@@ -65,7 +66,6 @@ async function chooseFile(userSource, dir) {
   userSource.print('\n');
   userSource.printOrderedListColumn(listFiles);
 
-  // console.log(listFiles);
   const result = await userSource.interrogator(`\n${CHOOSE_FILE}`, () => {
     userSource.clearScreen();
     userSource.print(`\n${CURRENT_DIR} ${dir}\n`);
@@ -81,8 +81,9 @@ async function chooseFile(userSource, dir) {
 
 async function fileQuestioner(userSource, defaults) {
   userSource.clearScreen();
-  let dir = defaults.parametrs.currentPath;
-  let file = defaults.parametrs.fileName;
+  const resultSettings = {};// = defaults.parameters;
+  let dir = defaults.parameters.currentPath;
+  let file = defaults.parameters.fileName;
 
   userSource.print(`\n${CURRENT_DIR} ${dir}\n`);
   const cd = await userSource.inputAnswer(CHANGE_DIR);
@@ -92,21 +93,36 @@ async function fileQuestioner(userSource, defaults) {
   const cf = await userSource.inputAnswer(CHANGE_FILE);
   if (cf.toLowerCase() === YES) file = await chooseFile(userSource, dir);
 
-  // userSource.printOrderedListColumn(list, color = 'cyan');
-  // const result = await userSource.inputAnswer(CHOSE_SOURCE);
+  resultSettings.currentPath = dir;
+  resultSettings.fileName = file;
 
-  console.log(file);
-
-  return defaults.parametrs;
+  return resultSettings;
 }
 
-async function chooseSource(list, userSource) {
-  const CHOOSE_SOURCE = 'Choose the source [N]: ';
+async function chooseSource(list, userSource, def) {
   userSource.printOrderedListColumn(list);
   const result = await userSource.inputAnswer(CHOOSE_SOURCE);
   if (list[result]) return list[result];
   userSource.printWaring(WRONG_NUMBER, 'warning');
-  return null;
+  return def;
+}
+
+async function inputCommand(userSource, listCommands) {
+  let chooseCoomand = 0;
+  const arrCommands = listCommands.map((item) => item.descr);
+  userSource.clearScreen();
+  userSource.print('\n');
+  userSource.printOrderedList(arrCommands);
+
+  const resCom = await userSource.inputAnswer(CHOOSE_COMMAND);
+  if (arrCommands[resCom]) chooseCoomand = resCom;
+  else {
+    userSource.printWaring(WRONG_NUMBER, 'warning');
+    return null;
+  }
+
+  const resPar = await userSource.inputAnswer(listCommands[chooseCoomand].desParam);
+  return [chooseCoomand, resPar];
 }
 
 const receiver = {
@@ -114,8 +130,9 @@ const receiver = {
 };
 
 const questionerFabric = () => ({
-  source: (list, source) => chooseSource(list, source),
+  source: (list, source, def) => chooseSource(list, source, def),
   settings: (sourceName, userSource, defaults) => receiver[sourceName](userSource, defaults),
+  command: (userSource, listCommands) => inputCommand(userSource, listCommands),
 });
 
 module.exports.create = questionerFabric;

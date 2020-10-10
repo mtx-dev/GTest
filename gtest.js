@@ -3,17 +3,17 @@
 const sourceConsole = require('./sconsole');
 const sourceFile = require('./sfile');
 const q = require('./questioner');
-// const utils = require('./utils');
+const utils = require('./utils');
 
 async function main() {
+  let result;
   // Defaults
   const sourceList = ['console', 'file', 'db'];
   const dataSourceSettings = {
     name: 'file',
-    parametrs: {
+    parameters: {
       fileName: 'test.txt',
       currentPath: `${__dirname}\\`,
-      filePath() { return this.currentPath + this.fileName; },
     },
   };
   const outDataSource = {
@@ -24,24 +24,23 @@ async function main() {
   userSource.init();
 
   // Set sorce of data
-  dataSourceSettings.name = await questioner.source(sourceList, userSource);
+  dataSourceSettings.name = await questioner.source(sourceList, userSource, sourceList[1]);
 
   // Set source settings
-  dataSourceSettings.parametrs = await questioner.settings(dataSourceSettings.name, userSource, dataSourceSettings);
+  dataSourceSettings.parameters = await questioner.settings(dataSourceSettings.name,
+    userSource, dataSourceSettings);
 
   const dataSource = sourceFile.create();
-  // const inData = await dataSource.read(dataSourceSettings.parametrs.filePath());
-  /* To do
-  const command = inputCommand(userSource, utils.commands);
-  const result = service(inData, command);
-  printResult(result, outDataSource); */
+  const filePath = dataSourceSettings.parameters.currentPath
+    + dataSourceSettings.parameters.fileName;
+  const inData = await dataSource.read(filePath);
 
-  // tests
+  const service = utils.create();
+  const command = await questioner.command(userSource, service.commands);
 
-  // dataSource.settings = dataSource.init();
-  // const listen = await userSource.inputAnswer('what?');
-
-  // console.log(dataSourceSettings.name);
+  if (command) result = service.commands[command[0]].execute(inData, command[1]);
+  userSource.print('\n==========  Result  ==============\n');
+  userSource.print(result);
 
   userSource.close();
 }
