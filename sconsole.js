@@ -110,5 +110,3 @@ module.exports = {
   interrogator: (question, callDo, callWhile) => cnsInterrogator(question, callDo, callWhile),
   clearScreen: () => cnslClear(),
 };
-
-// module.exports.create = sourceConsole;
