@@ -36,7 +36,7 @@ function cnslPrintOrderedList(arr, color = 'cyan') {
   let i = 0;
   arr.forEach((value) => {
     const str = `${colors[color]} [${i}] ${colors.reset} ${value}`;
-    console.log(str);
+    log(str);
     i += 1;
   });
 }
@@ -53,7 +53,7 @@ function cnslPrintOrderedListColumn(arr, color = 'cyan') {
 }
 
 function cnslPrintWaring(text, level = 'waring') {
-  console.log(`${colors[levels[level]]} ${text} ${colors.reset} `);
+  log(`${colors[levels[level]]} ${text} ${colors.reset} `);
 }
 
 async function cnslInputAnswer(question) {
@@ -98,7 +98,7 @@ function cnslClose() {
   rl.close();
 }
 
-const sourceConsole = () => ({
+module.exports = {
   init: () => cnslInit(),
   close: () => cnslClose(),
   print: (text) => cnslPrint(text),
@@ -109,6 +109,6 @@ const sourceConsole = () => ({
   inputAnswer: (question) => cnslInputAnswer(question),
   interrogator: (question, callDo, callWhile) => cnsInterrogator(question, callDo, callWhile),
   clearScreen: () => cnslClear(),
-});
+};
 
-module.exports.create = sourceConsole;
+// module.exports.create = sourceConsole;

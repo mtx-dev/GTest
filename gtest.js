@@ -2,13 +2,12 @@
 
 const sourceConsole = require('./sconsole');
 const sourceFile = require('./sfile');
-const q = require('./questioner');
+const questioner = require('./questioner');
 const utils = require('./utils');
 
 async function main() {
   let result;
   // Defaults
-  const sourceList = ['console', 'file', 'db'];
   const dataSourceSettings = {
     name: 'file',
     parameters: {
@@ -16,29 +15,24 @@ async function main() {
       currentPath: `${__dirname}\\`,
     },
   };
-  const outDataSource = {
-    name: 'console',
-  };
-  const questioner = q.create();
-  const userSource = sourceConsole.create();
-  userSource.init();
+  const userSource = sourceConsole;
 
-  // Set sorce of data
-  dataSourceSettings.name = await questioner.source(sourceList, userSource, sourceList[1]);
+  userSource.init();
 
   // Set source settings
   dataSourceSettings.parameters = await questioner.settings(dataSourceSettings.name,
     userSource, dataSourceSettings);
 
-  const dataSource = sourceFile.create();
+  // Get data
+  const dataSource = sourceFile;
   const filePath = dataSourceSettings.parameters.currentPath
     + dataSourceSettings.parameters.fileName;
   const inData = await dataSource.read(filePath);
 
-  const service = utils.create();
-  const command = await questioner.command(userSource, service.commands);
+  // Get command
+  const command = await questioner.command(userSource, utils.commands);
 
-  if (command) result = service.commands[command[0]].execute(inData, command[1]);
+  if (command) result = utils.commands[command[0]].execute(inData, command[1]);
   userSource.print('\n==========  Result  ==============\n');
   userSource.print(result);
 

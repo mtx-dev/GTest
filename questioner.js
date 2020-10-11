@@ -6,7 +6,6 @@ const pathModule = require('path');
 
 const NO_FOLDERS = 'no folders';
 const NO_FILES = 'no files';
-
 const CURRENT_DIR = 'Current folder - ';
 const CURRENT_FILE = 'Current file - ';
 const CHANGE_DIR = 'Change dir? [Y/N] ';
@@ -14,10 +13,7 @@ const CHANGE_FILE = 'Change file? [Y/N] ';
 const CHOOSE_FILE = 'Choose file: ';
 const CHOOSE_SOURCE = 'Choose the source [N]: ';
 const CHOOSE_COMMAND = 'Choose the command [N]: ';
-// changeDirectory const
 const HELP_DIR = '\nFolder number to enter it    or   y - to choose current folder';
-const ENTER = 'Answer: ';
-
 const YES = 'y';
 const WRONG_NUMBER = 'Wrong number';
 
@@ -56,6 +52,7 @@ async function changeDirectory(userSource, dir) {
     } else userSource.printWaring(WRONG_NUMBER, 'warning');
   }, (cDir) => {
     if (cDir.toLowerCase() === YES) return curDir;
+    return null;
   });
   return result;
 }
@@ -75,6 +72,7 @@ async function chooseFile(userSource, dir) {
     userSource.print(CHOOSE_FILE);
   }, (cFile) => {
     if (listFiles[+cFile]) return listFiles[cFile];
+    return null;
   });
   return result;
 }
@@ -129,10 +127,8 @@ const receiver = {
   file: (userSource, defaults) => fileQuestioner(userSource, defaults),
 };
 
-const questionerFabric = () => ({
+module.exports = {
   source: (list, source, def) => chooseSource(list, source, def),
   settings: (sourceName, userSource, defaults) => receiver[sourceName](userSource, defaults),
   command: (userSource, listCommands) => inputCommand(userSource, listCommands),
-});
-
-module.exports.create = questionerFabric;
+};

@@ -35,7 +35,7 @@ function printNSentenceRevers(text, numSensence) {
   return `${numSensence}th sentence with reverse letters: \n${words2.join(' ')}\n`;
 }
 
-const utilsInit = () => ({
+module.exports = {
   commands: [
     {
       name: 'delw',
@@ -59,6 +59,4 @@ const utilsInit = () => ({
       execute: (data, param) => printNSentenceRevers(data, param),
     },
   ],
-});
-
-module.exports.create = utilsInit;
+};
