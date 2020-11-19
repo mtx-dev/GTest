@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "butter"
+    },
+    {
+        "id": 2,
+        "name": "oil"
+    },
+    {
+        "id": 3,
+        "name": "onion"
+    },
+    {
+        "id": 4,
+        "name": "flour"
+    },
+    {
+        "id": 5,
+        "name": "wine"
+    },
+    {
+        "id": 6,
+        "name": "cheddar"
+    },
+    {
+        "id": 7,
+        "name": "egg"
+    },
+    {
+        "id": 8,
+        "name": "potatoes"
+    },
+    {
+        "id": 9,
+        "name": "salt"
+    },
+    {
+        "id": 10,
+        "name": "sugar"
+    }
+]

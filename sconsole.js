@@ -41,6 +41,13 @@ function cnslPrintOrderedList(arr, color = 'cyan') {
   });
 }
 
+function cnslPrintIdListObject(arr, color = 'cyan') {
+  for (const i in arr) {
+    const str = `${colors[color]} [${arr[i].id}] ${colors.reset} ${arr[i].name}`;
+    log(str);
+  }
+}
+
 function cnslPrintOrderedListColumn(arr, color = 'cyan') {
   const COLUMNS = 3;
   const arrStr = [''];
@@ -103,8 +110,9 @@ module.exports = {
   close: () => cnslClose(),
   print: (text) => cnslPrint(text),
   printList: (arr) => cnslPrintList(arr),
-  printOrderedList: (arr, col) => cnslPrintOrderedList(arr, col),
-  printOrderedListColumn: (arr, col) => cnslPrintOrderedListColumn(arr, col),
+  printOrderedList: (arr, color) => cnslPrintOrderedList(arr, color),
+  printIdListObject: (arr, color) => cnslPrintIdListObject(arr, color),
+  printOrderedListColumn: (arr, color) => cnslPrintOrderedListColumn(arr, color),
   printWaring: (text, level) => cnslPrintWaring(text, level),
   inputAnswer: (question) => cnslInputAnswer(question),
   interrogator: (question, callDo, callWhile) => cnsInterrogator(question, callDo, callWhile),
