@@ -1,5 +1,5 @@
 /**
- Questioner Fabric
+ Questioner
  */
 const fs = require('fs');
 const pathModule = require('path');

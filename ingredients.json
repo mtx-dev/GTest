@@ -1,42 +1,32 @@
-[
-    {
-        "id": 1,
-        "name": "butter"
-    },
-    {
-        "id": 2,
-        "name": "oil"
-    },
-    {
-        "id": 3,
-        "name": "onion"
-    },
-    {
-        "id": 4,
-        "name": "flour"
-    },
-    {
-        "id": 5,
-        "name": "wine"
-    },
-    {
-        "id": 6,
-        "name": "cheddar"
-    },
-    {
-        "id": 7,
-        "name": "egg"
-    },
-    {
-        "id": 8,
-        "name": "potatoes"
-    },
-    {
-        "id": 9,
-        "name": "salt"
-    },
-    {
-        "id": 10,
-        "name": "sugar"
-    }
-]
+{
+  "1": {
+    "name": "butter"
+  },
+  "2": {
+    "name": "oil"
+  },
+  "3": {
+    "name": "onion"
+  },
+  "4": {
+    "name": "flour"
+  },
+  "5": {
+    "name": "wine"
+  },
+  "6": {
+    "name": "cheddar"
+  },
+  "7": {
+    "name": "egg"
+  },
+  "8": {
+    "name": "potatoes"
+  },
+  "9": {
+    "name": "salt"
+  },
+  "10": {
+    "name": "sugar"
+  }
+}

@@ -1,25 +1,22 @@
 'use srict';
 
-const dotenv = require('dotenv');
-
-dotenv.config();
-
-const consol = require('./sconsole');
-const sourceFile = require('./sfile');
+const db = require('./dataservice');
+const tree = require('./category-tree');
+const consol = require('./sconsole2');
 const questioner = require('./questioner');
 const utils = require('./utils');
 
 async function main() {
-  // get base
-  let recipes = await sourceFile.read(`${__dirname}\\${process.env.DATA_RECIPES}`);
-  let ings = await sourceFile.read(`${__dirname}\\${process.env.DATA_INGRIDIENTS}`);
-  let catg = await sourceFile.read(`${__dirname}\\${process.env.DATA_CATEGORY}`);
-  let ri = await sourceFile.read(`${__dirname}\\${process.env.DATA_RECIPES_INGRIDIENTS}`);
-  recipes = JSON.parse(recipes);
-  ings = JSON.parse(ings);
-  catg = JSON.parse(catg);
-  ri = JSON.parse(ri);
-  catg.unshift({ id: 0, name: 'Exit' })
+  // Get data
+  const data = await db.readData();
+
+  console.log(catalog);
+
+  // browse catalog
+  // crate updade delete read recipe
+
+  /*
+  catg.unshift({ id: 0, name: 'Exit' });
 
   const CHOOSE_CATEGORY = 'Coose category: ';
   function veiwCatg() {
@@ -32,15 +29,14 @@ async function main() {
   }
 
   consol.init();
- 
 
   const currCatg = await chooseCatg();
   if (currCatg === 0) process.exit();
 
   consol.print(currCatg);
-  
-  // const currRecipe = chooseRecip(currCatg);
 
+  // const currRecipe = chooseRecip(currCatg);
+*/
   /*
   // Get data
   const dataSource = sourceFile;
@@ -55,7 +51,7 @@ async function main() {
   userSource.print('\n==========  Result  ==============\n');
   userSource.print(result);
 */
-  consol.close();
+  // consol.close();
 }
 main();
 

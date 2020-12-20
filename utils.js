@@ -18,11 +18,11 @@ function deleteText(text, delWord) {
 function countWords(text, nWord) {
   const wordsArr = text.match(/[^_\W]+/g);
   let result = `There are ${wordsArr.length} words in text \n`;
-  if (nWord) {
+  if (Number(nWord)) {
     const strNWords = wordsArr.filter((item, index) => !index % nWord === 0);
     result += `There are each ${nWord}-th word of text (${strNWords.length} items): \n`;
     result += `${strNWords.join(', ')}\n`;
-  }
+  } else result += 'It\'s not a number  \n';
   return result;
 }
 
