@@ -1,6 +1,9 @@
 # GTest
 Study project JS
-For learning how work with:
+For trainig work with:
  - command line
  - string oprations
- - cructure codiing
+ - array methods  
+ - cructure coding
+ - read / write data from JSON files 
+ - paterns "Repository" and "Command"

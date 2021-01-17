@@ -1,0 +1,56 @@
+{
+  "1": {
+    "category": 1,
+    "name": "Apple, cheese & potato pie",
+    "desc": "Put a savoury twist on apple pie with potato, cheese and onion, as well as mustard and thyme. The sweet and savoury flavours create a stunning pie",
+    "method": "First, make the pastry. Tip the flour, cheese and a pinch of salt into a large bowl and mix. Add the butter and rub it in using your fingertips until the mixture resembles breadcrumbs. Mix in 4-5 tbsp cold water, and bring together into a dough. Wrap and chill for 30 mins.",
+    "ingredients": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "2": {
+    "category": 2,
+    "name": "Beef & Guinness stew with bacon dumplings",
+    "desc": "Cosy-up this winter with a hearty stew. This beef and Guinness casserole really packs in the flavour, and comes served with delicious bacon dumplings, cabbage and mash",
+    "method": "First, make the dumplings. Gently fry the bacon until crisp in a large lidded casserole dish. Stir in the thyme leaves, then tip into a bowl and leave to cool slightly. Add the flour and suet to the bacon, and stir everything together. Make a well in the middle, then add the egg yolk, parsley, ½ tsp pepper and 2 tbsp very cold water, and start to mix into a dough. Keep adding water until you a have a firm but pliable dough. Divide the mixture into eight balls and chill until needed.",
+    "ingredients": [
+      5,
+      6,
+      7,
+      9
+    ]
+  },
+  "3": {
+    "category": 2,
+    "name": "Meatball black bean chilli",
+    "desc": "Double the amounts for this one-pot black bean chilli, then freeze the leftovers for busy days. It tastes just as great reheated as it does freshly cooked",
+    "method": "Heat the oil in a large flameproof casserole dish over a medium heat. Fry the meatballs for 5 mins until browned, then transfer to a plate with a slotted spoon.",
+    "ingredients": [
+      2,
+      8,
+      9
+    ]
+  },
+  "4": {
+    "category": 3,
+    "name": "Chicken noodle soup",
+    "desc": "Mary Cadogan's aromatic broth will warm you up on a winter's evening - it contains ginger, which is particularly good for colds.",
+    "method": "Pour the stock into a pan and add the chicken breast, ginger and garlic. Bring to the boil, then reduce the heat, partly cover and simmer for 20 mins, until the chicken is tender.",
+    "ingredients": [
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  "5": {
+    "category": 3,
+    "name": "noodle soup",
+    "desc": "it contains ginger, which is particularly good for colds.",
+    "method": "then reduce the heat, partly cover and simmer for 20 mins, until the chicken is tender.",
+    "ingredients": []
+  }
+}

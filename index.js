@@ -1,16 +1,47 @@
 'use srict';
 
-const db = require('./dataservice');
-const tree = require('./category-tree');
-const consol = require('./sconsole2');
-const questioner = require('./questioner');
-const utils = require('./utils');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const options = require('./config/config');
+const initData = require('./src/dataservice');
+const RecipeController = require('./src/controller');
+const Invoker = require('./src/command');
+const Runner = require('./src/runner');
+
+// const questioner = require('./questioner');
+// const utils = require('./utils');
 
 async function main() {
   // Get data
-  const data = await db.readData();
+  const data = await initData(options);
+  const controller = new RecipeController(data);
+  const commands = new Invoker(controller);
+  const run = new Runner(commands);
+  run.start();
 
-  console.log(catalog);
+  
+  //run.exit();
+// console.log(controller);
+  /*  const rec5 = {
+    id: 5,
+    category: 2,
+    name: 'chilli',
+    desc: ' It tastes just as great reheated as it does freshly cooked',
+    method: 'Heat the oil ',
+    // ingridients: ['cheddar', 'egg', 'potatoes2', 'sugar2'],
+    ingridients: ['1', '2', '3', '4'],
+  };
+  //console.log(recipes.getIngridietsOf(4));
+  const ingridients = ['potatoes4', 'noodle soup', 'potatoes2', 'sugar'];
+  recipes.addRecipeIngridiets(4, ingridients);
+  recipes.updateRecipe(rec5);
+
+  //console.log(recipes.getIngridietsOf(4));
+//  console.log(data.all('ingridients'));
+  recipes.deleteRecipe(5); */
+  //  console.log(data.all('recipes_ingridients'));
 
   // browse catalog
   // crate updade delete read recipe
@@ -54,15 +85,3 @@ async function main() {
   // consol.close();
 }
 main();
-
-/*
-const rl = require('readline');
-
-rl.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
-
-process.stdin.on('keypress', (str, key) => {
-  process.stdout.write(str);
-  consol.print(key);
-  if (key && key.ctrl && key.name == 'c') process.exit();
-}) */

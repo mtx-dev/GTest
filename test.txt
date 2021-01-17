@@ -1,9 +1,0 @@
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. 
-
-Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem veleum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel willum lunombro dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-
-If you're curious about this, it's a garbled quotation from Cicero's De Finibus Bonorum et Malorum (On the Ends of Good and Bad), book 1, paragraph 32, which reads, "Neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit," meaning, "There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain." The book was popular during the Renaissance, when the passage was used in a book of type samples for that wonderful new technology, printing.
-
-The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.
-
-Need more than one paragraph? You can specify how many paragraphs you need by changing the first number in the Rand statement. 

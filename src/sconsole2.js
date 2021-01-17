@@ -1,6 +1,11 @@
 /**
- Console source
+ Console service
  */
+
+ 
+const readline = require('readline');
+const Cursor = require('./cursor');
+
 const colors = {
   Reset: '\x1b[0m',
   Bright: '\x1b[1m',
@@ -37,7 +42,6 @@ const levels = {
   alert: 'FgRed',
 };
 
-const readline = require('readline');
 
 let rl;
 
@@ -128,23 +132,6 @@ function readLineClose() {
   rl.close();
 }
 
-class Cursor {
-  constructor(arr) {
-    this.position = 0;
-    this.max = arr.length - 1;
-  }
-
-  up() {
-    this.position--;
-    if (this.position < 0) this.position = 0;
-  }
-
-  down() {
-    this.position++;
-    if (this.position > this.max) this.position = this.max;
-  }
-}
-
 async function chooseItemIdList(list, title = '') {
   const cur = new Cursor(list);
   clear();
@@ -162,22 +149,21 @@ async function chooseItemIdList(list, title = '') {
           cur.down();
           break;
         case 'return':
-          resolve(list[cur.position].id);
+          resolve(list[cur.position]);
           break;
         default:
           break;
       }
       clear();
+      //console.clear();
       log(title);
       printIdList(list, cur.position);
     });
   });
   return promise;
 }
-async function asa() {
 
-}
-async function main() {
+/* async function main() {
   readLineInit();
 
   const ab = [{ id: 1, name: '2dggd' }, { id: 2, name: 'fgdg2' },
@@ -188,17 +174,18 @@ async function main() {
   readLineClose();
 }
 main();
-
-/* module.exports = {
-  init: () => cnslInit(),
-  close: () => cnslClose(),
-  print: (text) => cnslPrint(text),
+*/
+module.exports = {
+  init: () => readLineInit(),
+  close: () => readLineClose(),
+  print: (text) => print(text),
   printList: (arr) => cnslPrintList(arr),
-  printOrderedList: (arr, color) => cnslPrintOrderedList(arr, color),
-  printIdListObject: (arr, color) => cnslPrintIdListObject(arr, color),
-  printOrderedListColumn: (arr, color) => cnslPrintOrderedListColumn(arr, color),
-  printWaring: (text, level) => cnslPrintWaring(text, level),
-  inputAnswer: (question) => cnslInputAnswer(question),
-  interrogator: (question, callDo, callWhile) => cnsInterrogator(question, callDo, callWhile),
-  clearScreen: () => cnslClear(),
-}; */
+  printOrderedList: (arr, color) => printOrdList(arr, color),
+  printIdList: (arr, color) => printIdList(arr, color),
+  chooseItemIdList: (list, title) => chooseItemIdList(list, title),
+  // printOrderedListColumn: (arr, color) => cnslPrintOrderedListColumn(arr, color),
+  // printWaring: (text, level) => cnslPrintWaring(text, level),
+  inputAnswer: (question) => answer(question),
+  // interrogator: (question, callDo, callWhile) => cnsInterrogator(question, callDo, callWhile),
+  // clearScreen: () => cnslClear(),
+};
