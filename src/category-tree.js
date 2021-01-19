@@ -17,7 +17,7 @@ class Catalog {
     });
 
     let parent;
-    Object.keys(this.tree).map((i) => {
+    Object.keys(this.tree).forEach((i) => {
       parent = this.tree[i].parent;
       if (this.tree[parent]) this.tree[parent].children.push(i);
     });
@@ -49,6 +49,18 @@ class Catalog {
 
   getNameById(id) {
     return this.tree[id].name;
+  }
+
+  encode() {
+    const newData = {};
+    Object.keys(this.tree).forEach((i) => {
+      const item = Number(i);
+      newData[item] = {
+        name: this.tree[i].name,
+        prt: this.tree[i].parent,
+      };
+    });
+    return newData;
   }
 }
 

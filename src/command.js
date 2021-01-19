@@ -1,5 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-const consol = require('./sconsole2');
+const options = require('../config/config');
+const { writeData } = require('./dataservice');
+const consol = require('./consoleinput');
 const Presenter = require('./presenter');
 const Cursor = require('./cursor');
 
@@ -7,22 +9,7 @@ let cursor = {};
 let controller = {};
 let list = {};
 let helpCommands = '';
-let blockMove = false;
 const pesenter = new Presenter();
-
-function isCategory() {
-  if (cursor.type() === 'category') {
-    return true;
-  }
-  return false;
-}
-
-function isRecipe() {
-  if (cursor.type() === 'recipe') {
-    return true;
-  }
-  return false;
-}
 
 function changeCategory() {
   list = [];
@@ -36,6 +23,25 @@ function changeCategory() {
   list.push(...controller.category.children);
   list.push(...controller.getRecipesOfCategogy(controller.category.id));
   cursor = new Cursor(list);
+  cursor.state = 'navigate';
+}
+
+function renderCategory() {
+  console.clear();
+  console.log(pesenter.listToSrting(list, cursor.position));
+  console.log(helpCommands);
+}
+
+function renderRecipe() {
+  console.clear();
+  console.log(pesenter.recipeToString(controller.getRecipeById(cursor.id())));
+  console.log(helpCommands);
+}
+
+function preparationIngredients(array) {
+  const result = array.map((element) => element.trim())
+    .filter((element) => element);
+  return result;
 }
 
 const receiver = {
@@ -50,31 +56,28 @@ const receiver = {
       return acc;
     }, []);
     helpCommands = pesenter.commandsToString(help);
-    receiver.renderCategory();
+    console.clear();
+    receiver.render();
   },
 
-  renderCategory() {
-    console.clear();
-    console.log(pesenter.listToSrting(list, cursor.position));
-    console.log(helpCommands);
-  },
-
-  renderRecipe() {
-    console.clear();
-    console.log(pesenter.recipeToString(controller.getRecipeById(cursor.id())));
-    console.log(helpCommands);
+  render() {
+    if (cursor.state === 'navigate') {
+      renderCategory();
+    }
+    if (cursor.state === 'view') {
+      renderRecipe();
+    }
   },
 
   enter() {
-    if (isCategory()) {
+    if (cursor.type() === 'category') {
       controller.category.id = cursor.id();
       changeCategory();
-      receiver.renderCategory();
     }
-    if (isRecipe()) {
-      blockMove = true;
-      receiver.renderRecipe();
+    if (cursor.type() === 'recipe') {
+      cursor.state = 'view';
     }
+    receiver.render();
   },
 
   help(commands) {
@@ -89,35 +92,103 @@ const receiver = {
   },
 
   error(text) {
-    console.log(`Error: ${text}`); 
+    receiver.render();
+    console.log(pesenter.error(text));
   },
 
   moveDown() {
-    if (!blockMove) {
+    if (cursor.state === 'navigate') {
       cursor.down();
-      receiver.renderCategory();
+      receiver.render();
     }
   },
 
   moveUp() {
-    if (!blockMove) {
+    if (cursor.state === 'navigate') {
       cursor.up();
-      receiver.renderCategory();
+      receiver.render();
     }
   },
-  del() { console.log('help'); },
-  edit() { console.log('help'); },
+
+  del() {
+    if (cursor.type() === 'recipe') {
+      controller.deleteRecipe(cursor.id());
+      changeCategory();
+      this.render();
+    } else {
+      receiver.error('Choose recipe');
+    }
+  },
+
+  async edit() {
+    if (cursor.type() === 'recipe') {
+      const recipe = controller.getRecipeById(cursor.id());
+      console.clear();
+      console.log(`Edit Recipre of category - ${controller.category.name}`);
+      consol.init();
+      const newRecipe = {};
+      newRecipe.id = recipe.id;
+      newRecipe.category = controller.category.id;
+      console.log('Recipe name:');
+      newRecipe.name = await consol.edit(recipe.name);
+      console.log('Recipe description:');
+      newRecipe.desc = await consol.edit(recipe.desc);
+      console.log('Recipe method:');
+      newRecipe.method = await consol.edit(recipe.method);
+      console.log('Recipe ingredients: (separated by commas)');
+      newRecipe.ingredients = await consol.edit(recipe.ingredients.join(', '));
+      newRecipe.ingredients = preparationIngredients(newRecipe.ingredients.split(','));
+      controller.updateRecipe(newRecipe);
+      consol.close();
+      changeCategory();
+      this.render();
+    } else {
+      receiver.error('Choose recipe');
+    }
+  },
 
   async add() {
+    console.clear();
+    console.log(`Add Recipre to category - ${controller.category.name}`);
     consol.init();
-    const a = await consol.inputAnswer('??');
-    console.log(`====${a}`);
+    const newRecipe = {};
+    newRecipe.category = controller.category.id;
+    newRecipe.name = await consol.inputAnswer('Recipe name:');
+    newRecipe.desc = await consol.inputAnswer('Recipe description:');
+    newRecipe.method = await consol.inputAnswer('Recipe method:');
+    newRecipe.ingredients = await consol.inputAnswer('Recipe ingredients: (separated by commas)');
+    newRecipe.ingredients = preparationIngredients(newRecipe.ingredients.split(','));
+    controller.addRecipe(newRecipe);
     consol.close();
+    changeCategory();
+    this.render();
   },
-  
+
+  async save() {
+    const data = {};
+    data.category = controller.category;
+    data.recipes = controller.recipes;
+    data.ingredients = controller.ingredients;
+    console.log('\nSaving...');
+    await writeData(options, data);
+    receiver.render();
+    console.log('Data has been saved');
+  },
+
   close() {
-    blockMove = false;
-    receiver.renderCategory();
+    cursor.state = 'navigate';
+    receiver.render();
+  },
+
+  async exit() {
+    if (controller.isDataChanged()) {
+      consol.init();
+      const save = await consol.confirm('Save changes?');
+      consol.close();
+      if (save) {
+        await receiver.save();
+      }
+    }
   },
 };
 
@@ -160,11 +231,6 @@ class Invoker {
       description: 'or Esc - Close view',
       printable: true,
     };
-    this.del = {
-      execute: () => this._receiver.del(),
-      description: 'Delete recipe',
-      printable: true,
-    };
     this.edit = {
       execute: () => this._receiver.edit(),
       description: 'Edit recipe',
@@ -173,6 +239,21 @@ class Invoker {
     this.add = {
       execute: () => this._receiver.add(),
       description: 'Add recipe',
+      printable: true,
+    };
+    this.del = {
+      execute: () => this._receiver.del(),
+      description: 'Delete recipe',
+      printable: true,
+    };
+    this.save = {
+      execute: () => this._receiver.save(),
+      description: 'Save changes',
+      printable: true,
+    };
+    this.exit = {
+      execute: () => this._receiver.exit(),
+      description: 'Get out',
       printable: true,
     };
   }

@@ -18,23 +18,22 @@ class Repository {
 
   create(id, element) {
     this.data[id] = element;
+    this.changed = true;
   }
 
   update(id, element) {
     this.data[id] = element;
+    this.changed = true;
   }
 
   delete(id) {
     if (id in this.data) {
       delete this.data[id];
+      this.changed = true;
       return true;
     }
     throw new Error('ID does not exist');
   }
-
-  // has(table, id) {
-  //   return id in this.data[table];
-  // }
 }
 
 module.exports = Repository;

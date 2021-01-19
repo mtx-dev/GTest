@@ -60,6 +60,7 @@ class Presenter {
       recipe: 'FgYellow',
       cursor: 'BgCyan',
       command: 'FgBlue',
+      error: 'FgRed',
     };
     this.toRow = {
       recipe: (data) => recipeRowString(data),
@@ -81,7 +82,6 @@ class Presenter {
   recipeToString(recipe) {
     const result = [];
     result.push(`Category: ${paint(recipe.category, this.colorType.category)}`);
-    // result.push(`id: ${recipe.id}`);
     result.push(`Name: ${paint(recipe.name, this.colorType.recipe)}`);
     result.push('\nDecription:');
     result.push(paragraph(recipe.desc, 80));
@@ -95,11 +95,15 @@ class Presenter {
 
   commandsToString(commands) {
     let result = '';
-    commands.map((com) => {
+    commands.forEach((com) => {
       result += `${paint(com, this.colorType.command)}  `;
     });
     result += '\n';
     return result;
+  }
+
+  error(errorText) {
+    return paint(`Error: ${errorText}`, this.colorType.error);
   }
 }
 

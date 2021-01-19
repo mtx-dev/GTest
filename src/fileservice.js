@@ -13,13 +13,14 @@ async function fileRead(fName) {
 }
 
 async function fileWrite(fName, data) {
-  return new Promise(() => {
-    if (data) {
+  if (data) {
+    return new Promise((resolve, reject) => {
       fs.writeFile(fName, data, 'utf8', (err) => {
-        if (err) throw err;
+        if (err) reject(err);
+        else resolve(true);
       });
-    }
-  });
+    });
+  };
 }
 
 async function readData(fileName) {

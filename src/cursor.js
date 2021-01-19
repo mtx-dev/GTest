@@ -3,6 +3,7 @@ class Cursor {
     this.list = list;
     this.position = position || 0;
     this.max = list.length - 1;
+    this.state = '';
   }
 
   up() {
